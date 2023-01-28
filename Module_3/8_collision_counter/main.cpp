@@ -3,21 +3,21 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <sstream>
+#include <iterator>
 
 using namespace std;
 
 template <typename Hash>
 int FindCollisions(const Hash& hasher, istream& text) {
-    unordered_map<size_t, unordered_set<std::string, Hash>> base;
+    unordered_map<size_t, unordered_set<string>> base;
     std::string word;
     int count_ = 0;
     while (text >> word) {
-        size_t h = hasher(word);
-        auto it = base.insert({h, {word}});
-        count_ += !it.second;
+       size_t h = hasher(word);
+       auto [it, inserted] = base[h].insert(word);
+       count_ += inserted && base[h].size() > 1;
     }
     return count_;
-    
 }
 
 struct DummyHash {
