@@ -1,5 +1,6 @@
 #include <cassert>
 #include <iostream>
+#include <optional>
 
 template <typename T>
 struct TreeNode {
@@ -19,20 +20,18 @@ void DeleteTree(TreeNode<T>* node) {
 }
 
 template <typename T>
-bool CheckTreeProperty(const TreeNode<T>* node) {
-    const T* value = &node->value;
-    const T* left_value = node->left ? &node->left->value : nullptr;
-    const T* right_value = node->right ? &node->right->value : nullptr;
-    
-    if (left_value && right_value) {
-        return (*left_value > *value || *value > *right_value) ? false : 
-            CheckTreeProperty(node->left) && CheckTreeProperty(node->right);
-    } else if (left_value) {
-        return (*left_value > *value) ? false : CheckTreeProperty(node->left);
-    } else if (right_value) {
-        return (*value > *right_value) ? false : CheckTreeProperty(node->right);
+bool CheckTreeProperty(const TreeNode<T>* node, const T* min, const T* max) {
+    if (node == nullptr) return true;
+    const T value = node->value;
+    if ((min && value <= *min) || (max && value >= *max)) {
+        return false;
     }
-    return true;
+    return CheckTreeProperty(node->left, min, &value) && CheckTreeProperty(node->right, &value, max);
+}
+
+template <typename T>
+bool CheckTreeProperty(const TreeNode<T>* node) {
+    return CheckTreeProperty<T>(node, nullptr, nullptr);
 }
 
 int main() {
@@ -54,4 +53,6 @@ int main() {
 
     DeleteTree(root1);
     DeleteTree(root2);
+    
+    std::cout << "I'm IDLe";
 }
