@@ -20,28 +20,17 @@ void DeleteTree(TreeNode<T>* node) {
 
 template <typename T>
 bool CheckTreeProperty(const TreeNode<T>* node) {
-    T value = node->value;
-    if (node->left && node ->right) {
-        T left_value = node->left->value;
-        T right_value = node->right->value;
-        
-        if ((left_value > value) || (value > right_value)) {
-            return false;
-        }
-        
-        return CheckTreeProperty(node->left) && CheckTreeProperty(node->right);
-    } else if (node->left) {
-        T left_value = node->left->value;
-        if (left_value > value) {
-            return false;
-        }
-        return CheckTreeProperty(node->left);
-    } else if (node->right) {
-        T right_value = node->right->value;
-        if (value > right_value) {
-            return false;
-        }
-        return CheckTreeProperty(node->right);
+    const T* value = &node->value;
+    const T* left_value = node->left ? &node->left->value : nullptr;
+    const T* right_value = node->right ? &node->right->value : nullptr;
+    
+    if (left_value && right_value) {
+        return (*left_value > *value || *value > *right_value) ? false : 
+            CheckTreeProperty(node->left) && CheckTreeProperty(node->right);
+    } else if (left_value) {
+        return (*left_value > *value) ? false : CheckTreeProperty(node->left);
+    } else if (right_value) {
+        return (*value > *right_value) ? false : CheckTreeProperty(node->right);
     }
     return true;
 }
@@ -51,10 +40,17 @@ int main() {
     T* root1 = new T{6, 
         new T{4, new T{3}, new T{5}}, new T{7}};
     assert(CheckTreeProperty(root1));
-
+    CheckTreeProperty(root1);
+    
     T* root2 = new T{6, 
         new T{4, new T{3}, new T{5}}, new T{7, new T{8}}};
     assert(!CheckTreeProperty(root2));
+    CheckTreeProperty(root2);
+    
+    T* root3 = new T{3, 
+        new T{2, new T{1}, new T{12}}, new T{8, new T{12}}};
+    assert(!CheckTreeProperty(root3));
+    CheckTreeProperty(root3);
 
     DeleteTree(root1);
     DeleteTree(root2);
