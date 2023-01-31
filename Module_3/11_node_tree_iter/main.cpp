@@ -63,7 +63,7 @@ TreeNode<T>* begin(TreeNode<T>* node) {
 template <class T>
 TreeNode<T>* next(TreeNode<T>* node) {
     if (node->right) {
-        return node->right;
+        return node->right && node->right->left ? node->right->left : node->right;
     } else if (node->parent && node->parent->value > node->value) {
         return node->parent;
     } 
@@ -72,7 +72,6 @@ TreeNode<T>* next(TreeNode<T>* node) {
         bigger_ = bigger_->parent;
     }
     return bigger_->value > node->value ? bigger_ : nullptr;    
-
 }
 
 // функция создаёт новый узел с заданным значением и потомками
