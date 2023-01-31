@@ -48,30 +48,19 @@ ostream& operator << (ostream& out, const TreeNode<T>* node) {
 
 template <class T>
 TreeNode<T>* begin(TreeNode<T>* node) {
-    TreeNode<T>* mid_node = node;
-    while (mid_node->parent) {
-        mid_node = mid_node->parent;
-    }
-    
-    TreeNode<T>* result = mid_node;
-    while(result->left) {
-        result = result->left;
-    }
-    return result;
+    return node->left ? begin(node->left) : node;
 }
 
 template <class T>
 TreeNode<T>* next(TreeNode<T>* node) {
     if (node->right) {
-        return node->right && node->right->left ? node->right->left : node->right;
+        return begin(node->right);
     } else if (node->parent && node->parent->value > node->value) {
         return node->parent;
-    } 
-    TreeNode<T>* bigger_ = node;
-    while (bigger_->parent) {
-        bigger_ = bigger_->parent;
+    } else if (node->parent->value < node->value && node->parent->parent) {
+        return node->parent->parent->value > node->value ? node->parent->parent : next(node->parent->parent);
     }
-    return bigger_->value > node->value ? bigger_ : nullptr;    
+    return nullptr;    
 }
 
 // функция создаёт новый узел с заданным значением и потомками
@@ -96,7 +85,7 @@ int main() {
     T* iter = begin(root);
 
     while (iter) {
-        cout << iter->value << " "s;
+        cout << iter->value << endl;
         iter = next(iter);
     }
     cout << endl;
