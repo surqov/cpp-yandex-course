@@ -57,8 +57,13 @@ TreeNode<T>* next(TreeNode<T>* node) {
         return begin(node->right);
     } else if (node->parent && node->parent->value > node->value) {
         return node->parent;
-    } else if (node->parent->value < node->value && node->parent->parent) {
-        return node->parent->parent->value > node->value ? node->parent->parent : next(node->parent->parent);
+    } 
+    TreeNode<T>* bigger_ = node;
+    while (bigger_->parent) {
+        bigger_ = bigger_->parent;
+        if (bigger_->value > node->value) {
+            return bigger_;
+        }
     }
     return nullptr;    
 }
@@ -85,10 +90,10 @@ int main() {
     T* iter = begin(root);
 
     while (iter) {
-        cout << iter->value << endl;
+        cout << iter->value << " "s;
         iter = next(iter);
     }
     cout << endl;
 
     DeleteTree(root);
-}
+} 
