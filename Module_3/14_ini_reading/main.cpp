@@ -9,7 +9,7 @@
 using namespace std;
 
 int main() {
-        std::istringstream input{
+    std::istringstream input{
         "[vegetables]\n"
         "       potatoes       =10  \n"
         "   onions=1 \n"

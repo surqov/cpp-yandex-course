@@ -25,5 +25,5 @@ Document Load(std::istream& input);
     
 Section LoadSection(std::istream& input);
 
-void ClearMyStringPlease(std::string& input);
+void ClearMyString(std::string& input);
 }

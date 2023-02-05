@@ -36,6 +36,8 @@ ini::Document ini::Load(std::istream& input){
             continue;
         } else if (line[line.find_first_not_of(' ')] == '[') {
                 name  = line.substr(1, line.find(']') - 1);
+                ClearMyString(name);
+                //std::cout << name << "\n";
                 result.AddSection(name) = move(LoadSection(input));
         }
     }
@@ -51,14 +53,14 @@ ini::Section ini::LoadSection(std::istream& input) {
         }
         std::string key = line.substr(0, line.find_first_of("="));
         std::string value = line.substr(line.find_first_of('=') + 1, line.size() - line.find_first_of('='));
-        ClearMyStringPlease(key);
-        ClearMyStringPlease(value);
-        std::cout << "|" << key << "|" << " : " <<  "|" << value << "|" << "\n";
+        ClearMyString(key);
+        ClearMyString(value);
+        //std::cout << "|" << key << "|" << " : " <<  "|" << value << "|" << "\n";
         result[key] = value;     
     }
     return result;
 }  
 
-void ini::ClearMyStringPlease(std::string& key) {
-    key = key.substr(key.find_first_not_of(' '), key.find_last_not_of(' ') - key.find_first_not_of(' ') + 1);
+void ini::ClearMyString(std::string& key) {
+    key = key.substr(key.find_first_not_of(" ["), key.find_last_not_of(' ') - key.find_first_not_of(' ') + 1);
 }
