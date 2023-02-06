@@ -4,18 +4,23 @@
 #include <cmath>
 #include <sstream>
 
-namespace aggregator::tests {
 
+namespace statistics::tests {
+    
+namespace detail {
+    
 template <typename T>
-std::string GetPrinterValue(aggregator::Printer<T>& printer) {
+std::string GetPrinterValue(statistics::AggregPrinter<T>& printer) {
     std::ostringstream out;
     printer.Print(out);
 
     return std::move(out).str();
 }
-
-void Sum() {
-    ::Sum aggreg;
+    
+}
+    
+void AggregSum() {
+    statistics::aggregations::Sum aggreg;
     assert(*aggreg.Get() == 0);
 
     aggreg.PutValue(10.);
@@ -25,8 +30,8 @@ void Sum() {
     assert(*aggreg.Get() == -10.);
 }
 
-void Max() {
-    ::Max aggreg;
+void AggregMax() {
+    statistics::aggregations::Max aggreg;
     assert(!aggreg.Get());
 
     aggreg.PutValue(10.);
@@ -36,8 +41,8 @@ void Max() {
     assert(*aggreg.Get() == 20.);
 }
 
-void Mean() {
-    ::Average aggreg;
+void AggregMean() {
+    statistics::aggregations::Mean aggreg;
     assert(!aggreg.Get());
 
     aggreg.PutValue(10.);
@@ -48,8 +53,8 @@ void Mean() {
     assert(*aggreg.Get() == 5.);
 }
 
-void StandardDeviation() {
-    ::Std aggreg;
+void AggregStandardDeviation() {
+    statistics::aggregations::StandardDeviation aggreg;
     assert(!aggreg.Get());
 
     aggreg.PutValue(10.);
@@ -67,8 +72,8 @@ void StandardDeviation() {
     assert(std::abs(*aggreg.Get() - 5.) < 1e-5);
 }
 
-void Mode() {
-    ::Mode aggreg;
+void AggregMode() {
+    statistics::aggregations::Mode aggreg;
     assert(!aggreg.Get());
 
     aggreg.PutValue(1.1);
@@ -84,10 +89,10 @@ void Mode() {
     assert(std::round(*aggreg.Get()) == 2.);
 }
 
-void Printer() {
-    ::Printer<::Max> printer;
+void AggregPrinter() {
+    statistics::AggregPrinter<statistics::aggregations::Max> printer;
 
-    assert(GetPrinterValue(printer) == "max is undefined\n"s);
+    assert(statistics::tests::detail::GetPrinterValue(printer) == "max is undefined\n"s);
     printer.PutValue(10.);
     printer.PutValue(20.);
     printer.PutValue(-40.);
@@ -95,7 +100,6 @@ void Printer() {
     std::ostringstream out;
     out << 20.;
 
-    assert(GetPrinterValue(printer) == "max is "s + out.str() + "\n"s);
+    assert(statistics::tests::detail::GetPrinterValue(printer) == "max is "s + out.str() + "\n"s);
 }
-
 }

@@ -3,12 +3,12 @@
 #include <iostream>
 
 int main() {
-    aggregator::tests::Sum();
-    aggregator::tests::Max();
-    aggregator::tests::Mean();
-    aggregator::tests::StandardDeviation();
-    aggregator::tests::Mode();
-    aggregator::tests::Printer();
+    statistics::tests::AggregSum();
+    statistics::tests::AggregMax();
+    statistics::tests::AggregMean();
+    statistics::tests::AggregStandardDeviation();
+    statistics::tests::AggregMode();
+    statistics::tests::AggregPrinter();
 
     std::cout << "Test passed!"sv << std::endl;
 }

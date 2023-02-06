@@ -1,6 +1,6 @@
 #include "libstat.h"
 
-namespace aggregator {
+namespace statistics::aggregations {
 
 void Sum::PutValue(double value) {
     sum_ += value;
@@ -18,12 +18,12 @@ std::optional<double> Max::Get() const {
     return cur_max_;
 }
 
-void Average::PutValue(double value) {
+void Mean::PutValue(double value) {
     sum_.PutValue(value);
     ++count_;
 }
 
-std::optional<double> Average::Get() const {
+std::optional<double> Mean::Get() const {
     auto val = sum_.Get();
     if (!val || count_ == 0) {
         return std::nullopt;
@@ -32,13 +32,13 @@ std::optional<double> Average::Get() const {
     return *val / count_;
 }
 
-void Std::PutValue(double value) {
+void StandardDeviation::PutValue(double value) {
     sum_.PutValue(value);
     sum_sq_.PutValue(value * value);
     ++count_;
 }
 
-std::optional<double> Std::Get() const {
+std::optional<double> StandardDeviation::Get() const {
     auto val = sum_.Get();
     auto val2 = sum_sq_.Get();
 

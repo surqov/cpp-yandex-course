@@ -9,8 +9,10 @@
 
 using namespace std::literals;
 
-namespace aggregator {
+namespace statistics {
 
+namespace aggregations {
+    
 class Sum {
 public:
     void PutValue(double value);
@@ -37,7 +39,7 @@ private:
     std::optional<double> cur_max_;
 };
 
-class Average {
+class Mean {
 public:
     void PutValue(double value);
     std::optional<double> Get() const;
@@ -51,7 +53,7 @@ private:
     size_t count_ = 0;
 };
 
-class Std {
+class StandardDeviation {
 public:
     void PutValue(double value);
     std::optional<double> Get() const;
@@ -80,9 +82,21 @@ private:
     std::optional<double> cur_max_;
     size_t cur_count_ = 0;
 };
+}
+    
+namespace tests{
 
+void AggregSum();
+void AggregMax();
+void AggregMean();
+void AggregStandardDeviation();
+void AggregMode();
+void AggregPrinter();
+    
+}
+    
 template <typename Aggreg>
-class Printer {
+class AggregPrinter {
 public:
     void PutValue(double value) {
         inner_.PutValue(value);
@@ -96,22 +110,12 @@ public:
         } else {
             out << "undefined"sv;
         }
-        out << endl;
+        out << std::endl;
     }
 
 private:
     Aggreg inner_;
 };
-
-namespace tests{
-
-void Sum();
-void Max();
-void Mean();
-void StandardDeviation();
-void Mode();
-void Printer();
-
 }
 
-}
+    
