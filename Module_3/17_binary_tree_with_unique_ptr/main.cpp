@@ -8,7 +8,7 @@ template <typename T>
 struct TreeNode;
 
 template <typename T>
-using TreeNodePtr = std::unique_ptr<TreeNode<T> >;
+using TreeNodePtr = std::unique_ptr<TreeNode<T>>;
 
 template <typename T>
 struct TreeNode {
@@ -54,7 +54,7 @@ std::ostream& operator<<(std::ostream& out, const TreeNodePtr<T> node) {
 template <typename T>
 bool CheckTreeProperty(const TreeNodePtr<T> node, const T* min, const T* max) {
     if (node == nullptr) return true;
-    const T value = node.get()->value;
+    const T value = node->value;
     if ((min && value <= *min) || (max && value >= *max)) {
         return false;
     }
@@ -66,16 +66,13 @@ bool CheckTreeProperty(const TreeNodePtr<T> node) {
     return CheckTreeProperty<T>(node, nullptr, nullptr);
 }
 
-TreeNodePtr<int> N(int val, TreeNodePtr<int>&& left = {}, TreeNodePtr<int>&& right = {}) {
-    auto res = new TreeNodePtr<int>(val, std::move(left), std::move(right));
-    if (left) {
-        left.get->parent = res;
-    }
-    if (right) {
-        right->parent = res;
-    }
+template <typename T>
+bool CheckTreeProperty(const T* node) {
+    return CheckTreeProperty<T>(std::make_unique<T>(node));
+}
 
-    return res;
+TreeNodePtr<int> N(int val, TreeNodePtr<int>&& left = {}, TreeNodePtr<int>&& right = {}) {
+    return std::make_unique<TreeNode<int>>(std::move(val), std::move(left), std::move(right));
 }
 
 template <class T>
@@ -113,7 +110,10 @@ int main() {
     }
     cout << endl;
 
-    auto root2 = N(6, N(4, N(3), N(5)), N(7, N(8)));
+    auto root2 = N(6, 
+        N(4, 
+        N(3), N(5) ), 
+            N(7, N(8)));
     assert(!CheckTreeProperty(root2.get()));
 
     // Функция DeleteTree не нужна. Узлы дерева будут рекурсивно удалены
