@@ -7,18 +7,10 @@
 using namespace std;
 
 struct Cat {
-    Cat() = default;
-    
     Cat(const std::unique_ptr<Cat>& cat) noexcept
         : name_(cat->name_)
         , age_(cat->age_)
     {    
-    }
-    
-    Cat(const Cat& other) noexcept
-        : name_(other.name_)
-        , age_(other.age_)
-    { 
     }
     
     Cat(const string& name, int age)
@@ -62,11 +54,13 @@ public:
     }
     
     Witch& operator=(Witch& rhs)  {
-        auto temp_ = rhs;
-        name_.swap(rhs.name_);
-        if (rhs.cat_) {
-            cat_ = std::make_unique<Cat>(rhs.cat_);
-        }
+            if (this != &rhs) {
+                auto temp_ = rhs;
+                name_.swap(rhs.name_);
+                if (rhs.cat_) {
+                    cat_ = std::make_unique<Cat>(rhs.cat_);
+                }
+            }
         return *this;
     }
     
