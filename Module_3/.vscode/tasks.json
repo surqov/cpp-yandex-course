@@ -2,15 +2,19 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: clang++ сборка активного файла",
-            "command": "/usr/bin/clang++",
+            "label": "C/C++: g++ сборка активного файла",
+            "command": "/usr/bin/g++",
             "args": [
-                "-fcolor-diagnostics",
-                "-fansi-escape-codes",
+                "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "*.cpp",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-pedantic",
+                "-Werror"
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -18,12 +22,9 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "group": "build",
             "detail": "Задача создана отладчиком."
-        }
+        },
     ],
     "version": "2.0.0"
 }
