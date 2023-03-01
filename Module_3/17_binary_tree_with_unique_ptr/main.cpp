@@ -52,9 +52,10 @@ std::ostream& operator<<(std::ostream& out, const TreeNodePtr<T> node) {
 }
 
 template <typename T>
-bool CheckTreeProperty(const TreeNodePtr<T> node, const T* min, const T* max) {
+bool CheckTreeProperty(const TreeNodePtr<T>&& node, const T* min, const T* max) {
     if (node == nullptr) return true;
-    const T value = node->value;
+    auto temp_ = std::make_unique<TreeNodePtr<T>>(node);
+    const T value = *temp_.get();
     if ((min && value <= *min) || (max && value >= *max)) {
         return false;
     }
@@ -63,12 +64,12 @@ bool CheckTreeProperty(const TreeNodePtr<T> node, const T* min, const T* max) {
 
 template <typename T>
 bool CheckTreeProperty(const TreeNodePtr<T> node) {
-    return CheckTreeProperty<T>(node, nullptr, nullptr);
+    return CheckTreeProperty<T>(std::move(node), nullptr, nullptr);
 }
 
 template <typename T>
 bool CheckTreeProperty(const T* node) {
-    return CheckTreeProperty<T>(std::make_unique<T>(node));
+    return CheckTreeProperty<T>(std::make_unique<TreeNode<T>>(node));
 }
 
 TreeNodePtr<int> N(int val, TreeNodePtr<int>&& left = {}, TreeNodePtr<int>&& right = {}) {
@@ -102,13 +103,6 @@ int main() {
     using T = TreeNode<int>;
     auto root1 = N(6, N(4, N(3), N(5)), N(7));
     assert(CheckTreeProperty(root1.get()));
-
-    T* iter = begin(root1.get());
-    while (iter) {
-        cout << iter->value << " "s;
-        iter = next(iter);
-    }
-    cout << endl;
 
     auto root2 = N(6, 
         N(4, 
