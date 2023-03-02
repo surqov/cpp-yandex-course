@@ -11,7 +11,7 @@ template <typename T>
 using TreeNodePtr = std::unique_ptr<TreeNode<T>>;
 
 template <typename T>
-struct TreeNode { 
+struct TreeNode {
     // Используйте TreeNodePtr<T> вместо сырых указателей
     // Примите умные указатели по rvalue-ссылке
     TreeNode(T val, TreeNodePtr<T>&& left, TreeNodePtr<T>&& right)
@@ -42,8 +42,8 @@ bool CheckTreeProperty(const TreeNodePtr<T>& node) {
 }
 
 template <typename T>
-bool CheckTreeProperty(const TreeNode<T>* node) {
-    return CheckTreeProperty<T>(std::make_unique<TreeNode<T>>(node->value, nullptr, nullptr));
+bool CheckTreeProperty(TreeNode<T>* node) {
+    return CheckTreeProperty<T>(std::make_unique<TreeNode<T>>(node->value, std::move(node->left), std::move(node->right)));
 }
 
 TreeNodePtr<int> N(int val, TreeNodePtr<int>&& left = {}, TreeNodePtr<int>&& right = {}) {
