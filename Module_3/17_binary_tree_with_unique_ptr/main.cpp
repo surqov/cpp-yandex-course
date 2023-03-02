@@ -52,10 +52,9 @@ std::ostream& operator<<(std::ostream& out, const TreeNodePtr<T> node) {
 }
 
 template <typename T>
-bool CheckTreeProperty(const TreeNodePtr<T>&& node, const T* min, const T* max) {
+bool CheckTreeProperty(const TreeNodePtr<T>& node, const T* min, const T* max) {
     if (node == nullptr) return true;
-    auto temp_ = std::make_unique<TreeNodePtr<T>>(node);
-    const T value = *temp_.get();
+    const T value = node.get()->value;
     if ((min && value <= *min) || (max && value >= *max)) {
         return false;
     }
@@ -64,7 +63,7 @@ bool CheckTreeProperty(const TreeNodePtr<T>&& node, const T* min, const T* max) 
 
 template <typename T>
 bool CheckTreeProperty(const TreeNodePtr<T> node) {
-    return CheckTreeProperty<T>(std::move(node), nullptr, nullptr);
+    return CheckTreeProperty<T>(node, nullptr, nullptr);
 }
 
 template <typename T>
