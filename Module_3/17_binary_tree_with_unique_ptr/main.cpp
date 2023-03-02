@@ -33,7 +33,7 @@ bool CheckTreeProperty(const TreeNodePtr<T>& node, const T* min, const T* max) {
     if ((min && value <= *min) || (max && value >= *max)) {
         return false;
     }
-    return CheckTreeProperty(node.get()->left, min, &value) && CheckTreeProperty(node.get()->right, &value, max);
+    return CheckTreeProperty(node->left, min, &value) && CheckTreeProperty(node->right, &value, max);
 }
 
 template <typename T>
@@ -42,8 +42,8 @@ bool CheckTreeProperty(const TreeNodePtr<T>& node) {
 }
 
 template <typename T>
-bool CheckTreeProperty(const T* node) {
-    return CheckTreeProperty(std::make_unique<TreeNode>(node, nullptr, nullptr));
+bool CheckTreeProperty(const TreeNode<T>* node) {
+    return CheckTreeProperty<T>(std::make_unique<TreeNode<T>>(node->value, nullptr, nullptr));
 }
 
 TreeNodePtr<int> N(int val, TreeNodePtr<int>&& left = {}, TreeNodePtr<int>&& right = {}) {
@@ -82,17 +82,16 @@ TreeNodePtr<T> next(TreeNodePtr<T> node) {
 
 int main() {
     using namespace std;
-    using T = TreeNode<int>;
     auto root1 = N(6, N(4, N(3), N(5)), N(7));
     assert(CheckTreeProperty(root1));
-    //assert(CheckTreeProperty(root1.get()));
+    assert(CheckTreeProperty(root1.get()));
 
     auto root2 = N(6, 
         N(4, 
         N(3), N(5) ), 
             N(7, N(8)));
     assert(!CheckTreeProperty(root2));
-    //assert(!CheckTreeProperty(root2.get()));
+    assert(!CheckTreeProperty(root2.get()));
 
     // Функция DeleteTree не нужна. Узлы дерева будут рекурсивно удалены
     // благодаря деструкторам unique_ptr
