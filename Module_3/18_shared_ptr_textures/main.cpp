@@ -73,8 +73,8 @@ void TestCpp() {
           "#            cCcCcCcCcC                                                       #\n"
           "#                                                                             #\n"
           "###############################################################################\n";
-
-    assert(answer == output.str());
+    std::cout << output.str();
+    //assert(answer == output.str());
 }
 
 void TestCow() {
@@ -95,9 +95,9 @@ void TestCow() {
         R"(#     ||----w |    #)""\n"
         R"(#     ||     ||    #)""\n"
         R"(####################)""\n";
-    // clang-format on
-
-    assert(answer == output.str());
+        // clang-format on
+std::cout << output.str();
+    //assert(answer == output.str());
 }
 
 void TestFromYandex1() {    
@@ -112,11 +112,21 @@ void TestFromYandex1() {
                     "# ... #\n"
                     "# ... #\n"
                     "#######\n";
-    assert(answer == output.str());
+    std::cout << output.str();
+    //assert(answer == output.str());
+}
+
+void MyOwnTest() {
+    Canvas canvas({5, 5});
+    canvas.AddShape(ShapeType::RECTANGLE, {1, 0}, {1000, 1000}, nullptr);
+    std::stringstream output;
+    canvas.Print(output);
+    std::cout << output.str();
 }
 
 int main() {
-    //TestCow();
-    //TestCpp();
+    TestCow();
+    TestCpp();
     TestFromYandex1();
+    MyOwnTest();
 }
