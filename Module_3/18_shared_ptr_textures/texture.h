@@ -16,7 +16,7 @@ public:
         try {
             return image_.at(p.y).at(p.x);
         } catch (const std::out_of_range&) {
-            return ' ';
+            return '\0';
         }
     }
 

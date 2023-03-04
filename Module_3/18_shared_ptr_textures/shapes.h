@@ -45,7 +45,7 @@ public:
             for (int x = pos_.x, texture_x = 0; texture_x < size_.width; ++x, ++texture_x) {
                 if ((type_ == ShapeType::RECTANGLE) || 
                 (type_ == ShapeType::ELLIPSE && IsPointInEllipse({texture_x, texture_y}, {size_.width, size_.height}))) {
-                    image[y][x] = (x < image_width) && (y < image_height)
+                    image[y][x] = ((x < image_width) && (y < image_height) && texture_ != nullptr && texture_->GetSize().height != 0 &&  texture_->GetSize().width != 0 && texture_->GetPixelColor({texture_x, texture_y}) != '\0')
                                 ? texture_->GetPixelColor({texture_x, texture_y})
                                 : null_c;
                 } 

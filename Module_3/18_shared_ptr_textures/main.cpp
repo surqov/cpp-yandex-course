@@ -100,7 +100,23 @@ void TestCow() {
     assert(answer == output.str());
 }
 
+void TestFromYandex1() {    
+    Canvas canvas({5, 3});
+    canvas.AddShape(ShapeType::RECTANGLE, {1, 0}, {3, 3}, nullptr);
+
+    std::stringstream output;
+    canvas.Print(output);
+    const auto answer =
+                    "#######\n"
+                    "# ... #\n"
+                    "# ... #\n"
+                    "# ... #\n"
+                    "#######\n";
+    assert(answer == output.str());
+}
+
 int main() {
-    TestCow();
-    TestCpp();
+    //TestCow();
+    //TestCpp();
+    TestFromYandex1();
 }
