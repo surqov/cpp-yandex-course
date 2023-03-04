@@ -102,5 +102,5 @@ void TestCow() {
 
 int main() {
     TestCow();
-    //TestCpp();
+    TestCpp();
 }

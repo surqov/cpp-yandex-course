@@ -1,5 +1,6 @@
 #pragma once
 #include "common.h"
+#include <stdexcept>
 
 class Texture {
 public:
@@ -12,7 +13,11 @@ public:
     }
 
     char GetPixelColor(Point p) const {
-        return image_.at(p.x).at(p.y);
+        try {
+            return image_.at(p.y).at(p.x);
+        } catch (const std::out_of_range&) {
+            return ' ';
+        }
     }
 
 private:

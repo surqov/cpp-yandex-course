@@ -39,12 +39,15 @@ public:
     // должны отображаться с помощью символа точка '.'
     // Части фигуры, выходящие за границы объекта image, должны отбрасываться.
     void Draw(Image& image) const {
-        for (int i = 0; i < image.at(0).size(); ++i) {
-            for (int j = 0; j < image.size(); ++j) {
+        int image_width = image.at(0).size();
+        int image_height = image.size();
+        for (int y = pos_.y, texture_y = 0; texture_y < size_.height; ++y, ++texture_y) {
+            for (int x = pos_.x, texture_x = 0; texture_x < size_.width; ++x, ++texture_x) {
                 if ((type_ == ShapeType::RECTANGLE) || 
-                    (type_ == ShapeType::ELLIPSE && IsPointInEllipse({i, j}, texture_->GetSize()))) {
-                        image[i][j] = ? texture_->GetPixelColor({i % texture_->GetSize().width, 
-                                                                j % texture_->GetSize().height}) : null_c;
+                (type_ == ShapeType::ELLIPSE && IsPointInEllipse({texture_x, texture_y}, {size_.width, size_.height}))) {
+                    image[y][x] = (x < image_width) && (y < image_height)
+                                ? texture_->GetPixelColor({texture_x, texture_y})
+                                : null_c;
                 } 
             }
         }
