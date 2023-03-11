@@ -13,6 +13,8 @@ using namespace std;
 
 enum class Color { RED, GREEN, BLUE };
 
+const double PI = M_PI; 
+
 ostream& operator<<(ostream& out, Color color) {
     switch (color) {
         case Color::RED:
@@ -29,22 +31,101 @@ ostream& operator<<(ostream& out, Color color) {
 }
 
 class Shape {
-    // Напишите реализацию самостоятельно
+public:
+    Shape(const Color& color) 
+    : _color(color){
+    }
+
+    Color GetColor() const {
+        return _color;
+    }
+
+    void SetColor(const Color& color) {
+        _color = color;
+    }
+
+    virtual double GetArea() const {
+        return 0.0;
+    }
+
+    virtual std::string GetType() const {
+        return "Shape"s;
+    }
+
+private:
+    Color _color;
 };
 
-class Rectangle {
-    // Напишите реализацию самостоятельно
+class Rectangle : public Shape {
+public:
+    Rectangle(const int height, const int width, const Color& color)
+    : Shape(color)
+    , _height(height)
+    , _width(width) {
+    }
+
+    void SetSize(const int width, const int height) {
+        _height = height;
+        _width = width;
+    }
+
+    double GetArea() const override {
+        return _height * _width;
+    }
+
+    double GetWidth() const {
+        return _width;
+    }
+
+    double GetHeight() const {
+        return _height;
+    }
+
+    std::string GetType() const override {
+        return "Rectangle"s;
+    }
+
+private:
+    int _height = 0.0;
+    int _width = 0.0;
+
 };
 
-class Circle {
-    // Напишите реализацию самостоятельно
+class Circle : public Shape {
+public:
+    Circle(const double radius, const Color& color) 
+    : Shape(color)
+    , _radius(radius) {
+    }
+
+    double GetRadius() const {
+        return _radius;
+    }
+
+    void SetRadius(const double radius) {
+        _radius = radius;
+    }
+
+    double GetArea() const override {
+        return PI * _radius * _radius;
+    }
+
+    std::string GetType() const override {
+        return "Circle"s;
+    }
+
+private:
+    double _radius;
 };
 
 // Возвращает суммарную площадь фигур, указатели на которые находятся в переданной коллекции collection
 template <typename ShapeCollection>
 double CalcSumArea(const ShapeCollection& collection) {
-    // Заглушка. Напишите реализацию самостоятельно
-    return 0;
+    double area = 0.0;
+    for (const auto& item : collection) {
+        area += item->GetArea();
+    }
+    return area;
 }
 
 void PrintShapeInfo(const Shape& shape) {
